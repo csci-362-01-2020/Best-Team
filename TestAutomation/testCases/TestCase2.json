@@ -1,0 +1,14 @@
+{   
+    "module": "Dropdown",
+    "functionName": "entWithContent",
+    "basicInfo": "Must take in array and return the number objects that contain non empty strings that are present with the key \"value\"",
+    "input": [
+        {
+            "value": ""
+        },
+        {
+            "value": "X"
+        }
+    ],
+    "expectedOutput": 0
+}
