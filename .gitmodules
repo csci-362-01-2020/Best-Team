@@ -1,3 +1,3 @@
-[submodule "TestAutomation/project/MarsMapMaker-1"]
-	path = TestAutomation/project/MarsMapMaker-1
-	url = https://github.com/hafey1/MarsMapMaker-1
+[submodule "TestAutomation/project/MarsMapMaker"]
+	path = TestAutomation/project/MarsMapMaker
+	url = https://github.com/hafey1/MarsMapMaker
