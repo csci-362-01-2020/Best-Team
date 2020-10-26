@@ -89,7 +89,7 @@ const anotherWait = await resolveAfter2Seconds();
 console.log( "hello" + data)
 console.log("boodbye" + infoForTestRunner)
 //write the info to testRunner
-fsLibrary.writeFile('../project/MarsMapMaker-1/src/__tests__/testRunner.js', data, (error) => {
+fsLibrary.writeFile('../project/MarsMapMaker/src/__tests__/testRunner.js', data, (error) => {
     
     if (error) throw error;
     
