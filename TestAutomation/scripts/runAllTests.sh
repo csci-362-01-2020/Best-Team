@@ -4,3 +4,6 @@ sleep 2
 echo "done"
 cd ../project/MarsMapMaker/
 npm test
+cd ../../scripts
+node verifyResults.js
+echo "verifying results"

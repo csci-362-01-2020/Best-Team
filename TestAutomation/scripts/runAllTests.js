@@ -10,6 +10,8 @@ function resolveAfter2Seconds() {
     });
 }
 
+
+
 function testRunnerContent(fromCases) {
     let propHandle = ""
 
@@ -23,6 +25,14 @@ function testRunnerContent(fromCases) {
             imports = imports + "import { " + tCase.module + " } from \"../components/" + tCase.module + "\";\n"
     }
     imports = imports + "\n"
+
+    let oracleFile = { oracle: []}
+    for(let i = 0; i < fromCases.length; i++){
+        let tCase = fromCases[i]
+       oracleFile.oracle[i] = { ID: tCase.ID, expectedResult: tCase.expectedOutput}
+    }
+    const oracleFileWrite = JSON.stringify(oracleFile, null, 4)
+  
 
     let testCalls = "\n"
     
@@ -50,8 +60,9 @@ function testRunnerContent(fromCases) {
         testCalls = testCalls + "\t\texpect(result).toBe(" + tCase.expectedOutput + ");\n\t});\n});\n\n"
 
     }
+    const testRun = imports + testCalls
 
-    return imports + testCalls;
+    return {testRun, oracleFileWrite};
 }
 
 
@@ -83,13 +94,22 @@ const waiting = await resolveAfter2Seconds();
 console.log('Finished Processing ' + infoForTestRunner.length + " Test Case(s).")
 
 //this will write the proper file information soon
-const data = testRunnerContent(infoForTestRunner);
+let {testRun, oracleFileWrite} = testRunnerContent(infoForTestRunner);
 
 const anotherWait = await resolveAfter2Seconds();
-console.log( "hello" + data)
-console.log("boodbye" + infoForTestRunner)
+//console.log( "hello" + data)
+//console.log("boodbye" + infoForTestRunner)
 //write the info to testRunner
-fsLibrary.writeFile('../project/MarsMapMaker/src/__tests__/testRunner.js', data, (error) => {
+
+fsLibrary.writeFile('../oracles/testOracles.json', oracleFileWrite, (error) => {
+    
+    if (error) throw error;
+    
+    }) 
+
+
+
+fsLibrary.writeFile('../project/MarsMapMaker/src/__tests__/testRunner.js', testRun, (error) => {
     
     if (error) throw error;
     
@@ -99,3 +119,4 @@ fsLibrary.writeFile('../project/MarsMapMaker/src/__tests__/testRunner.js', data,
 
 // call the function
 asyncReadWrite();
+
