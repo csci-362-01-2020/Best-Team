@@ -18,23 +18,23 @@ function testRunnerContent(fromCases) {
     
     
     let imports = "import React from \'react\';\nimport { shallow } from \'enzyme\'\n//{ } imports non default component\n"
-    console.log("sdfasffdsfa " + fromCases.length)
+    
     for (let i = 0; i < fromCases.length; i++) {
         let tCase = fromCases[i]
         if (!imports.includes(tCase.module))
             imports = imports + "import { " + tCase.module + " } from \"../components/" + tCase.module + "\";\n"
     }
-    imports = imports + "\n"
+    imports = imports + "\nconst fsLibrary = require('fs');\n"
 
     let oracleFile = { oracle: []}
     for(let i = 0; i < fromCases.length; i++){
         let tCase = fromCases[i]
-       oracleFile.oracle[i] = { ID: tCase.ID, expectedResult: tCase.expectedOutput}
+       oracleFile.oracle[i] = { ID: tCase.ID, expectedResult: tCase.expectedOutput, behavior: tCase.metaData}
     }
     const oracleFileWrite = JSON.stringify(oracleFile, null, 4)
   
 
-    let testCalls = "\n"
+    let testCalls = "\nlet actualValues = []\n\n"
     
     for(let i = 0; i < fromCases.length; i++){
         let tCase = fromCases[i]
@@ -43,24 +43,31 @@ function testRunnerContent(fromCases) {
             propHandle = "list={[]}"
         }
         
-        //first line of function
-        testCalls = testCalls + "describe(\'" + tCase.module + " Component\', () => {\n"
 
-        //second line of function
-        testCalls = testCalls + "\tit(\'" + tCase.metaDataShort + "\', () => {\n"
-
-        let propID = tCase.module
         //third line of function
-        testCalls = testCalls + "\t\tconst wrapper = shallow(<" + tCase.module + " " + propHandle + " />);\n"
-        
+        if (!testCalls.includes("<" + tCase.module)){
+        testCalls = testCalls + "const wrapper = shallow(<" + tCase.module + " " + propHandle + " />);\n\n"
+        }
         //fourth line of funciton
-        testCalls = testCalls + "\t\tlet result = wrapper.instance()." + tCase.functionName + "(" + JSON.stringify(tCase.input) + ");\n"
-
-        //fifth line of function
-        testCalls = testCalls + "\t\texpect(result).toBe(" + tCase.expectedOutput + ");\n\t});\n});\n\n"
-
+        testCalls = testCalls + "let resultOf" + tCase.ID + " = wrapper.instance()." + tCase.functionName + "(" + JSON.stringify(tCase.input) + ");\n"
+        
+        testCalls = testCalls + "actualValues.push({ \"ID\": " + tCase.ID + ", \"actualResult\": resultOf" + tCase.ID + "});\n\n"
     }
+
+    //write out to file
+    testCalls = testCalls + "\nconst returnValuesWrapped = { results: actualValues }\n"
+    testCalls = testCalls + "const converttoJSON = JSON.stringify(returnValuesWrapped, null, 4)\n"
+    testCalls = testCalls + "fsLibrary.writeFile('../../reports/actualResults.json', converttoJSON, (error) => {\n\tif (error) throw error;\n});"
+    
+    //creates a successful jest test to avoid unnecessary console output
+
+    testCalls = testCalls + "\n\ndescribe('dummy', () => {"
+    testCalls = testCalls + "\n\tit('0 to be 0', () => {"
+    testCalls = testCalls + "\n\t\texpect(0).toBe(0);});});\n"
+
     const testRun = imports + testCalls
+
+
 
     return {testRun, oracleFileWrite};
 }
