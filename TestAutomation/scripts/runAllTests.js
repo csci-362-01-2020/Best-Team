@@ -29,7 +29,8 @@ function testRunnerContent(fromCases) {
     let oracleFile = { oracle: []}
     for(let i = 0; i < fromCases.length; i++){
         let tCase = fromCases[i]
-       oracleFile.oracle[i] = { ID: tCase.ID, expectedResult: tCase.expectedOutput, behavior: tCase.metaData}
+       oracleFile.oracle[i] = { ID: tCase.ID, expectedResult: tCase.expectedOutput, behavior: tCase.metaData, mod: tCase.module, fun: tCase.functionName, in: tCase.input
+        }
     }
     const oracleFileWrite = JSON.stringify(oracleFile, null, 4)
   
