@@ -1,9 +1,16 @@
-{   
+{
     "module": "DropDown",
     "ID": 3,
     "functionName": "entWithContent",
-    "metaData": "Must take in integer and return -1",
-    "metaDataShort": "DropDown.entWithContent(input) should return -1",
-    "input": 2,
-    "expectedOutput": -1
+    "metaData": "Must take in an array of objects and return the last index that contain non empty strings that are present with the key \"value\" or return -1",
+    "metaDataShort": "DropDown.entWithContent(input) must return 1",
+    "input": [
+        {
+            "value": ""
+        },
+        {
+            "value": "Foo"
+        }
+    ],
+    "expectedOutput": 1
 }

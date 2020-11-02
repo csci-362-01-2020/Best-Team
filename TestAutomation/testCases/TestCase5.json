@@ -1,9 +1,9 @@
 {   
-    "module": "DropDown",
+    "module": "CardList",
     "ID": 5,
-    "functionName": "entWithContent",
-    "metaData": "Must take in string and return -1 value",
-    "metaDataShort": "DropDown.entWithContent(input) should return -1",
-    "input": "cat",
-    "expectedOutput": -1
+    "functionName": "typeField",
+    "metaData": "Must take in empty string and return the string 'both'",
+    "metaDataShort": "CardList.typeField(input) must return 'both'",
+    "input": "",
+    "expectedOutput": "both"
 }

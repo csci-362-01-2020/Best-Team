@@ -14,15 +14,18 @@ function resolveAfter2Seconds() {
 
 function testRunnerContent(fromCases) {
     let propHandle = ""
-
+    let useUtility = [{mod: "CardList", funcImp: "typeField } from \"../util/helper\""}]
     
     
     let imports = "import React from \'react\';\nimport { shallow } from \'enzyme\'\n//{ } imports non default component\n"
     
     for (let i = 0; i < fromCases.length; i++) {
         let tCase = fromCases[i]
-        if (!imports.includes(tCase.module))
+        if (!imports.includes(tCase.module) && tCase.module !== useUtility[0].mod)
             imports = imports + "import { " + tCase.module + " } from \"../components/" + tCase.module + "\";\n"
+        else if (!imports.includes(useUtility[0].funcImp) && tCase.module === useUtility[0].mod) {
+            imports = imports + "import { " + useUtility[0].funcImp + ";\n"
+        }
     }
     imports = imports + "\nconst fsLibrary = require('fs');\n"
 
@@ -46,11 +49,13 @@ function testRunnerContent(fromCases) {
         
 
         //third line of function
-        if (!testCalls.includes("<" + tCase.module)){
+        if (!testCalls.includes("<" + tCase.module) && tCase.module !== useUtility[0].mod){
         testCalls = testCalls + "const wrapper = shallow(<" + tCase.module + " " + propHandle + " />);\n\n"
         }
         //fourth line of funciton
+        if(tCase.module !== useUtility[0].mod){
         testCalls = testCalls + "let resultOf" + tCase.ID + " = wrapper.instance()." + tCase.functionName + "(" + JSON.stringify(tCase.input) + ");\n"
+        } else { testCalls = testCalls + "let resultOf" + tCase.ID + " = " + tCase.functionName + "(" + JSON.stringify(tCase.input) + ");\n"}
         
         testCalls = testCalls + "actualValues.push({ \"ID\": " + tCase.ID + ", \"actualResult\": resultOf" + tCase.ID + "});\n\n"
     }

@@ -30,7 +30,7 @@ await resolveAfter2Seconds();
 //console.log(infoForTestVerification[0].oracle[1])
 
 let Mergedresults = {finalReport:[]}
-for (let i = 0; i < 5; i++) {
+for (let i = 0; i < infoForTestVerification[0].oracle.length; i++) {
     Mergedresults.finalReport[i] = {...infoForTestVerification[0].oracle[i], ...infoForTestVerification[1].results[i]}
 }
 
