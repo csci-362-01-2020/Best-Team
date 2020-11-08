@@ -46,6 +46,7 @@ for (let i = 0; i < headers.length; i++) {
 finalReportHTML = finalReportHTML + "</tr>\n</thead>\n<tbody>\n"
 
 let fRep = Mergedresults.finalReport
+fRep.sort((a, b) => (a.ID > b.ID) ? 1 : -1)
 for (let i = 0; i < fRep.length; i++) {
     
     let passFail = "Error"

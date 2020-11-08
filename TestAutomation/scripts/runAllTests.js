@@ -39,8 +39,7 @@ function testRunnerContent(fromCases) {
   
 
     let testCalls = "\nlet actualValues = []\n\n"
-    let newComp = false;
-    let wrapperNum = 1;
+    
     for(let i = 0; i < fromCases.length; i++){
         let tCase = fromCases[i]
         
@@ -52,13 +51,12 @@ function testRunnerContent(fromCases) {
         
 
         //third line of function
-        if (!testCalls.includes("<" + tCase.module) && tCase.module !== useUtility[0].mod){
-        wrapperNum++    
-        testCalls = testCalls + "const wrapper" + wrapperNum + " = shallow(<" + tCase.module + " " + propHandle + " />);\n\n"
+        if (!testCalls.includes("<" + tCase.module) && tCase.module !== useUtility[0].mod){  
+        testCalls = testCalls + "const wrapper" + tCase.module + " = shallow(<" + tCase.module + " " + propHandle + " />);\n\n"
         }
         //fourth line of funciton
         if(tCase.module !== useUtility[0].mod){
-        testCalls = testCalls + "let resultOf" + tCase.ID + " = wrapper" + wrapperNum +".instance()." + tCase.functionName + "(" + JSON.stringify(tCase.input) + ");\n"
+        testCalls = testCalls + "let resultOf" + tCase.ID + " = wrapper" + tCase.module +".instance()." + tCase.functionName + "(" + JSON.stringify(tCase.input) + ");\n"
         } else { testCalls = testCalls + "let resultOf" + tCase.ID + " = " + tCase.functionName + "(" + JSON.stringify(tCase.input) + ");\n"}
         
         testCalls = testCalls + "actualValues.push({ \"ID\": " + tCase.ID + ", \"actualResult\": resultOf" + tCase.ID + "});\n\n"

@@ -1,0 +1,9 @@
+{   
+    "module": "DropDown",
+    "ID": 9,
+    "functionName": "entWithContent",
+    "metaData": "Must take in string and return -1 value",
+    "metaDataShort": "DropDown.entWithContent(input) must return -1",
+    "input": "cat",
+    "expectedOutput": -1
+}
