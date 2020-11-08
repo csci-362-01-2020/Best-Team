@@ -63,7 +63,7 @@ function testRunnerContent(fromCases) {
     //write out to file
     testCalls = testCalls + "\nconst returnValuesWrapped = { results: actualValues }\n"
     testCalls = testCalls + "const converttoJSON = JSON.stringify(returnValuesWrapped, null, 4)\n"
-    testCalls = testCalls + "fsLibrary.writeFile('../../reports/actualResults.json', converttoJSON, (error) => {\n\tif (error) throw error;\n});"
+    testCalls = testCalls + "fsLibrary.writeFile('../../temp/actualResults.json', converttoJSON, (error) => {\n\tif (error) throw error;\n});"
     
     //creates a successful jest test to avoid unnecessary console output
 

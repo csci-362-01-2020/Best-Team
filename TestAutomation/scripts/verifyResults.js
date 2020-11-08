@@ -27,7 +27,7 @@ let fileLocations = [oracleFile, ResultFile]
         
         });}
 await resolveAfter2Seconds();    
-//console.log(infoForTestVerification[0].oracle[1])
+
 
 let Mergedresults = {finalReport:[]}
 for (let i = 0; i < infoForTestVerification[0].oracle.length; i++) {
@@ -44,7 +44,7 @@ for (let i = 0; i < headers.length; i++) {
     finalReportHTML = finalReportHTML + "<th>"+headers[i]+"</th>\n"
 }
 finalReportHTML = finalReportHTML + "</tr>\n</thead>\n<tbody>\n"
-console.log(Mergedresults)
+
 let fRep = Mergedresults.finalReport
 for (let i = 0; i < fRep.length; i++) {
     
@@ -76,7 +76,4 @@ fsLibrary.writeFile('../reports/finalReport.HTML', finalReportHTML, (error) => {
 return infoForTestVerification;
 }
 //now create html file with merged results and make bash script open it up
-const resultsToMerge = readWriteFromFiles("../oracles/testOracles.json", "../reports/actualResults.json")
-console.log(typeof resultsToMerge)
-
-console.log("Hello I am in verify results")
+const resultsToMerge = readWriteFromFiles("../oracles/testOracles.json", "../temp/actualResults.json")

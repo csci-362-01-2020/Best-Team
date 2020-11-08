@@ -5,8 +5,8 @@ echo "done"
 cd ../project/MarsMapMaker/
 npm test
 cd ../../scripts
-node verifyResults.js
 echo "verifying results..."
+node verifyResults.js
 sleep 2
-echo "displaying results..."
+echo "displaying results to HTML..."
 xdg-open ../reports/finalReport.HTML
