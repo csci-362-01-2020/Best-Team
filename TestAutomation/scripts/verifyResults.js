@@ -49,7 +49,7 @@ let fRep = Mergedresults.finalReport
 for (let i = 0; i < fRep.length; i++) {
     
     let passFail = "Error"
-    if (fRep[i].expectedResult === fRep[i].actualResult){
+    if (JSON.stringify(fRep[i].expectedResult) === JSON.stringify(fRep[i].actualResult) && typeof fRep[i].expectedResult === typeof fRep[i].actualResult){
         passFail = "pass"
     } else { passFail = "fail"}
     finalReportHTML = finalReportHTML + "<tr>\n"
@@ -59,8 +59,8 @@ for (let i = 0; i < fRep.length; i++) {
     finalReportHTML = finalReportHTML + "<td>" +fRep[i].fun+ "</td>"
     finalReportHTML = finalReportHTML + "<td>" +JSON.stringify(fRep[i].in)+ "</td>"
     finalReportHTML = finalReportHTML + "<td>" +fRep[i].behavior+ "</td>"
-    finalReportHTML = finalReportHTML + "<td>" +fRep[i].expectedResult+ "</td>"
-    finalReportHTML = finalReportHTML + "<td>" +fRep[i].actualResult+ "</td>"
+    finalReportHTML = finalReportHTML + "<td>" +JSON.stringify(fRep[i].expectedResult)+ "</td>"
+    finalReportHTML = finalReportHTML + "<td>" +JSON.stringify(fRep[i].actualResult)+ "</td>"
     finalReportHTML = finalReportHTML + "</tr>"
 }
 

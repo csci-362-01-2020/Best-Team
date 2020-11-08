@@ -1,0 +1,9 @@
+{   
+    "module": "App",
+    "ID": 6,
+    "functionName": "findDuplicates",
+    "metaData": "Must take in array of primatives and return an array that contains the duplicated values from the input array",
+    "metaDataShort": "App.findDuplicate must return [ 'cat' ]",
+    "input": [ "cat", "cat" ],
+    "expectedOutput": [ "cat" ]
+}
