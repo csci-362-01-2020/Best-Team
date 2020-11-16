@@ -1,0 +1,9 @@
+{   
+    "module": "CardList",
+    "ID": 24,
+    "functionName": "typeField",
+    "metaData": "Must take in a string containing metadata for an added card and return the string 'added_card'",
+    "metaDataShort": "CardList.typeField(input) must return 'added_card",
+    "input": "<METADATA_ADD>",
+    "expectedOutput": "added_card"
+}

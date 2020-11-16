@@ -1,0 +1,9 @@
+{   
+    "module": "App",
+    "ID": 19,
+    "functionName": "findDuplicates",
+    "metaData": "Must take a String and return -1",
+    "metaDataShort": "App.findDuplicate must return -1",
+    "input": "testString",
+    "expectedOutput": -1
+}

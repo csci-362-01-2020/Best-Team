@@ -1,0 +1,9 @@
+{   
+    "module": "App",
+    "ID": 20,
+    "functionName": "findDuplicates",
+    "metaData": "Must take an array with no duplicates of multiple types and return an empty array",
+    "metaDataShort": "App.findDuplicate must return an empty array",
+    "input": [ "test", 123, "123", null, -123, "test\n"],
+    "expectedOutput": []
+}
