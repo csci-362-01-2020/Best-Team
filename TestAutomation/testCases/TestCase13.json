@@ -1,0 +1,9 @@
+{
+    "module": "FieldCard",
+    "ID": 13,
+    "functionName": "lengthCheckedValue",
+    "metaData": "Must take in a string and returns the first 20 characters + '...' if the length is over 25 characters, otherwise return an equivalent string",
+    "metaDataShort": "FieldCard.lengthCheckedValue(input) must return 'abcdefghijklmnopqrst...'",
+    "input": "abcdefghijklmnopqrstuvwxyz",
+    "expectedOutput": "abcdefghijklmnopqrst..."
+}
