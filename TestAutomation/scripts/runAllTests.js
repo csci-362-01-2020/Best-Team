@@ -45,7 +45,9 @@ function testRunnerContent(fromCases) {
         
         if (tCase.module === "DropDown") {
             propHandle = "list={[]}"
-        }else {
+        } else if(tCase.module === "FieldCard"){
+            propHandle = "fieldValue={''} fieldTitle={''}"
+        } else {
             propHandle = ""
         }
         

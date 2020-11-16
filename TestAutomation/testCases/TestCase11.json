@@ -1,0 +1,9 @@
+{   
+    "module": "FieldCard",
+    "ID": 11,
+    "functionName": "lengthCheckedValue",
+    "metaData": "Must take in String with length less than 25 characters and return an equivalent string",
+    "metaDataShort": "FieldCard.lengthCheckedValue must return 'small string'",
+    "input": "small string",
+    "expectedOutput": "small string"
+}
