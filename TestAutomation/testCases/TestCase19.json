@@ -2,8 +2,8 @@
     "module": "App",
     "ID": 19,
     "functionName": "findDuplicates",
-    "metaData": "Must take a String and return -1",
-    "metaDataShort": "App.findDuplicate must return -1",
+    "metaData": "Must take a String and return empty array",
+    "metaDataShort": "App.findDuplicate must return []",
     "input": "testString",
-    "expectedOutput": -1
+    "expectedOutput": []
 }
