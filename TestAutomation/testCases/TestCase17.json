@@ -1,9 +1,9 @@
 {
-    "module": "DropDown",
+    "module": "FieldCard",
     "ID": 17,
-    "functionName": "entEnd",
-    "metaData": "Must take an array of objects and searches the ent array in the store for any index with content. Returns one less than the length of the input array",
-    "metaDataShort": "DropDown.entEnd must return 4",
-    "input": ["","","","",""], 
-    "expectedOutput": 4
+    "functionName": "isMetaDataAddCard",
+    "metaData": "Must take an integer representing a card ID and must return true if the ID is less than 4, else return false",
+    "metaDataShort": "FieldCard.isMetaDataAddCard must return true",
+    "input": 0, 
+    "expectedOutput": true
 }

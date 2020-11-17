@@ -1,0 +1,9 @@
+{
+    "module": "FieldCard",
+    "ID": 18,
+    "functionName": "multiValuesBoolHelp",
+    "metaData": "Must take a string and return true if it matches any field type in a list of field type strings, else return false",
+    "metaDataShort": "FieldCard.multiValuesBoolHelp must return true",
+    "input": "field_name", 
+    "expectedOutput": true
+}
