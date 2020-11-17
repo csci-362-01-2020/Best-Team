@@ -1,0 +1,9 @@
+{   
+    "module": "App",
+    "ID": 14,
+    "functionName": "findDuplicates",
+    "metaData": "Must take an array with multiple duplicates of multiple types and return array of the items that have duplicates in the first array",
+    "metaDataShort": "App.findDuplicate must return [123,\"test\",null]]",
+    "input": [ 123, "test", 123, "123", "test", null, -123, "test\n", null ],
+    "expectedOutput": [123,"test",null]
+}

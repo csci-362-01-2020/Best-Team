@@ -1,0 +1,9 @@
+{
+    "module": "App",
+    "ID": 17,
+    "functionName": "removeDuplicates",
+    "metaData": "Must take two arrays with corresponding values and return both arrays with duplicates removed.",
+    "metaDataShort": "App.removeDuplicates must return",
+    "input": [],[], 
+    "expectedOutput": [[],[]]
+}

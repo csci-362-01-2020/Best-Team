@@ -1,0 +1,9 @@
+{
+"module": "DropDown",
+    "ID": 15,
+    "functionName": "detectNonDateCharacters",
+    "metaData": "Must take a string and look for characters not associated with accepted date formats. If found, return true, else return false.",
+    "metaDataShort": "detectNonDateCharacters must return true",
+    "input": "/([^0-9/-]|[]|[?@!#$%\\^&*\\(\\)_\\=+{}[]\"])", 
+    "expectedOutput": true
+}
