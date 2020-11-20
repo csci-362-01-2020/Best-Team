@@ -1,80 +1,78 @@
-const { info } = require('console');
 const fsLibrary = require('fs');
 
-function resolveAfter2Seconds() {
-    return new Promise( resolve => {
-        setTimeout(() => {
-            resolve('resolved');
+function createHeader() {
+    let headers = ["Pass/Fail", "ID", "Module", "Function", "Input","Description", "Expected Result", "Actual Result"]
+    let finalReportHTML = "<!DOCTYPE html>\n<html>\n<head>\n<link rel=\"stylesheet\" href=\"finalReport.css\">\n</head>\n<body>\n\n"
+    finalReportHTML = finalReportHTML + "<table class=\"greyGridTable\">\n<thead>\n<tr>\n"
+    for (let i = 0; i < headers.length; i++) {
+        finalReportHTML = finalReportHTML + "<th>"+headers[i]+"</th>\n"
+    }
+    finalReportHTML = finalReportHTML + "</tr>\n</thead>\n<tbody>\n"
 
-        }, 2000);
-    });
+    return finalReportHTML;
 }
 
+function createReport(pathToResults) {
 
+    //read each result and append the final report
+    try {
+    const fileNames = fsLibrary.readdirSync(pathToResults);
+    
+    //sort the files
+    const captureNumber = /[0-9]+/g
+    fileNames.sort((a, b) => (parseInt(a.match(captureNumber).join("")) > parseInt(b.match(captureNumber).join(""))) ? 1 : -1)
+    
+    //header and CSS declaration of the file
+    let finalReportFile = createHeader();
 
-async function readWriteFromFiles(oracleFile, ResultFile) {
-let infoForTestVerification = []
+    fileNames.forEach(file => {
+        try {
 
-let fileLocations = [oracleFile, ResultFile]
-
-    for (let i = 0; i < fileLocations.length; i++){
-        fsLibrary.readFile(fileLocations[i], "utf-8", function(err, content) {
-            if (err) {
-                throw err;
-                
-            }
-            infoForTestVerification.push(JSON.parse(content))
+            const eachFile = fsLibrary.readFileSync(pathToResults + file, "utf-8");
         
-        });}
-await resolveAfter2Seconds();    
+        const testResult = JSON.parse(eachFile);
 
+        //determine pass/fail status
+        let passFail = "Error"
+        if (JSON.stringify(testResult.expectedResult) === JSON.stringify(testResult.actualResult) && typeof testResult.expectedResult === typeof testResult.actualResult) {
+            passFail = "pass";
+        } else { passFail = "fail"; }
 
-let Mergedresults = {finalReport:[]}
-for (let i = 0; i < infoForTestVerification[0].oracle.length; i++) {
-    Mergedresults.finalReport[i] = {...infoForTestVerification[0].oracle[i], ...infoForTestVerification[1].results[i]}
-}
-
-let headers = ["Pass/Fail", "ID", "Module", "Function", "Input","Description", "Expected Result", "Actual Result"]
-
-let finalReportHTML = "<!DOCTYPE html>\n<html>\n<head>\n<link rel=\"stylesheet\" href=\"finalReport.css\">\n</head>\n<body>\n\n"
-
-
-finalReportHTML = finalReportHTML + "<table class=\"greyGridTable\">\n<thead>\n<tr>\n"
-for (let i = 0; i < headers.length; i++) {
-    finalReportHTML = finalReportHTML + "<th>"+headers[i]+"</th>\n"
-}
-finalReportHTML = finalReportHTML + "</tr>\n</thead>\n<tbody>\n"
-
-let fRep = Mergedresults.finalReport
-fRep.sort((a, b) => (a.ID > b.ID) ? 1 : -1)
-for (let i = 0; i < fRep.length; i++) {
+        //display html for a row
+        finalReportFile = finalReportFile + "<tr>\n"
+        finalReportFile = finalReportFile + "<td class=\"" + passFail + "\">" + passFail + "</td>\n"
+        finalReportFile = finalReportFile + "<td>" + testResult.ID + "</td>"
+        finalReportFile = finalReportFile + "<td>" + testResult.component + "</td>"
+        finalReportFile = finalReportFile + "<td>" + testResult.method + "</td>"
+        finalReportFile = finalReportFile + "<td>" + JSON.stringify(testResult.input) + "</td>"
+        finalReportFile = finalReportFile + "<td>" + testResult.meta + "</td>"
+        finalReportFile = finalReportFile + "<td>" + JSON.stringify(testResult.expectedResult) + "</td>"
+        finalReportFile = finalReportFile + "<td>" + JSON.stringify(testResult.actualResult) + "</td>"
+        finalReportFile = finalReportFile + "</tr>"
+    } catch (e) {
+        console.log("error with reading files");
+        throw e;
+    }
     
-    let passFail = "Error"
-    if (JSON.stringify(fRep[i].expectedResult) === JSON.stringify(fRep[i].actualResult) && typeof fRep[i].expectedResult === typeof fRep[i].actualResult){
-        passFail = "pass"
-    } else { passFail = "fail"}
-    finalReportHTML = finalReportHTML + "<tr>\n"
-    finalReportHTML = finalReportHTML + "<td class=\""+passFail+"\">"+passFail+"</td>\n"
-    finalReportHTML = finalReportHTML + "<td>" +fRep[i].ID+ "</td>"
-    finalReportHTML = finalReportHTML + "<td>" +fRep[i].mod+ "</td>"
-    finalReportHTML = finalReportHTML + "<td>" +fRep[i].fun+ "</td>"
-    finalReportHTML = finalReportHTML + "<td>" +JSON.stringify(fRep[i].in)+ "</td>"
-    finalReportHTML = finalReportHTML + "<td>" +fRep[i].behavior+ "</td>"
-    finalReportHTML = finalReportHTML + "<td>" +JSON.stringify(fRep[i].expectedResult)+ "</td>"
-    finalReportHTML = finalReportHTML + "<td>" +JSON.stringify(fRep[i].actualResult)+ "</td>"
-    finalReportHTML = finalReportHTML + "</tr>"
+    
+    })
+    
+    finalReportFile = finalReportFile + "</tbody>\n</table>\n\n</body>\n</html>\n"
+    try {
+        fsLibrary.writeFileSync('../reports/finalReport.HTML', finalReportFile);
+
+    }
+    catch (e) {
+        console.log("error with writing file");
+        throw e;
+    }
+
+} catch (e) {
+    console.log("error with reading directory")
+    throw e;
 }
 
-
-finalReportHTML = finalReportHTML + "</tbody>\n</table>\n\n</body>\n</html>\n"
-
-fsLibrary.writeFile('../reports/finalReport.HTML', finalReportHTML, (error) => {
-    
-    if (error) throw error;
-    
-    }) 
-
-return infoForTestVerification;
 }
-//now create html file with merged results and make bash script open it up
-const resultsToMerge = readWriteFromFiles("../oracles/testOracles.json", "../temp/actualResults.json")
+
+const resultsFilePath = '../temp/';    
+createReport(resultsFilePath);

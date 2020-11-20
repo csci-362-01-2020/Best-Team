@@ -1,142 +1,91 @@
 const fsLibrary = require('fs');
 
-//this allows for the testcases to be read before outputting to testRunner
-function resolveAfter2Seconds() {
-    return new Promise( resolve => {
-        setTimeout(() => {
-            resolve('resolved');
-
-        }, 2000);
-    });
-}
+//function to read through testcases
+//must read testCases build tests and store oracle
+//then verify must read oracle and test results and output to HTML
 
 
-
-function testRunnerContent(fromCases) {
-    let propHandle = ""
-    let useUtility = [{mod: "CardList", funcImp: "typeField } from \"../util/helper\""}]
-    
-    
-    let imports = "import React from \'react\';\nimport { shallow } from \'enzyme\'\n//{ } imports non default component\n"
-    
-    for (let i = 0; i < fromCases.length; i++) {
-        let tCase = fromCases[i]
-        if (!imports.includes(tCase.module) && tCase.module !== useUtility[0].mod)
-            imports = imports + "import { " + tCase.module + " } from \"../components/" + tCase.module + "\";\n"
-        else if (!imports.includes(useUtility[0].funcImp) && tCase.module === useUtility[0].mod) {
-            imports = imports + "import { " + useUtility[0].funcImp + ";\n"
-        }
-    }
-    imports = imports + "\nconst fsLibrary = require('fs');\n"
-
-    let oracleFile = { oracle: []}
-    for(let i = 0; i < fromCases.length; i++){
-        let tCase = fromCases[i]
-       oracleFile.oracle[i] = { ID: tCase.ID, expectedResult: tCase.expectedOutput, behavior: tCase.metaData, mod: tCase.module, fun: tCase.functionName, in: tCase.input
-        }
-    }
-    const oracleFileWrite = JSON.stringify(oracleFile, null, 4)
-  
-
-    let testCalls = "\nlet actualValues = []\n\n"
-    
-    for(let i = 0; i < fromCases.length; i++){
-        let tCase = fromCases[i]
-        
-        if (tCase.module === "DropDown") {
-            propHandle = "list={[]}"
-        } else if(tCase.module === "FieldCard"){
-            propHandle = "fieldValue={''} fieldTitle={''}"
-        } else {
-            propHandle = ""
-        }
-        
-
-        //third line of function
-        if (!testCalls.includes("<" + tCase.module) && tCase.module !== useUtility[0].mod){  
-        testCalls = testCalls + "const wrapper" + tCase.module + " = shallow(<" + tCase.module + " " + propHandle + " />);\n\n"
-        }
-        //fourth line of funciton
-        if(tCase.module !== useUtility[0].mod){
-        testCalls = testCalls + "let resultOf" + tCase.ID + " = wrapper" + tCase.module +".instance()." + tCase.functionName + "(" + JSON.stringify(tCase.input) + ");\n"
-        } else { testCalls = testCalls + "let resultOf" + tCase.ID + " = " + tCase.functionName + "(" + JSON.stringify(tCase.input) + ");\n"}
-        
-        testCalls = testCalls + "actualValues.push({ \"ID\": " + tCase.ID + ", \"actualResult\": resultOf" + tCase.ID + "});\n\n"
-        
-        
-
-    }
-
-    //write out to file
-    testCalls = testCalls + "\nconst returnValuesWrapped = { results: actualValues }\n"
-    testCalls = testCalls + "const converttoJSON = JSON.stringify(returnValuesWrapped, null, 4)\n"
-    testCalls = testCalls + "fsLibrary.writeFile('../../temp/actualResults.json', converttoJSON, (error) => {\n\tif (error) throw error;\n});"
-    
-    //creates a successful jest test to avoid unnecessary console output
-
-    testCalls = testCalls + "\n\ndescribe('dummy', () => {"
-    testCalls = testCalls + "\n\tit('0 to be 0', () => {"
-    testCalls = testCalls + "\n\t\texpect(0).toBe(0);});});\n"
-
-    const testRun = imports + testCalls
-
-
-
-    return {testRun, oracleFileWrite};
-}
-
-
-
-
-//Reads testcases and writes to test runner based on results
-async function asyncReadWrite() {
-let infoForTestRunner = []
-fsLibrary.readdir('../testCases/', function(err, fileNames) {
+//Reads testcases and builds drivers
+function buildTestsAndOracle(testCasesPath, testExecTemplatePath, testLocations) {
+    //read through directory of testCases
+    fsLibrary.readdir(testCasesPath, function(err, fileNames) {
     if (err) {
         throw err;
         }
-       
+    //reads testCase file
     fileNames.forEach(function(filename) {
-        fsLibrary.readFile('../testCases/' + filename, "utf-8", function(err, content) {
+        fsLibrary.readFile(testCasesPath + filename, "utf-8", function(err, testCaseContent) {
             if (err) {
                 throw err;
                 
             }
 
-            infoForTestRunner.push(JSON.parse(content))
+            //assignment block of testCase file content
+            const testCaseInfo  = JSON.parse(testCaseContent);
+            const comp = JSON.stringify(testCaseInfo.module);
+            const testId = testCaseInfo.ID;
+            const funName = JSON.stringify(testCaseInfo.functionName);
+            const meta = JSON.stringify(testCaseInfo.metaData);
+            const input = JSON.stringify(testCaseInfo.input);
+            const oracle = JSON.stringify(testCaseInfo.expectedOutput);
+
+            //find Driver
+            fsLibrary.readdir(testExecTemplatePath, function(err, fileDriverNames) {
+                if (err) {
+                    throw err;
+                    }
+                
+                //reads testCase file
+                fileDriverNames.forEach(function(fileDriverName) {
+                    //identifies driver by module name
+                    if (fileDriverName.includes(comp.replace(/\"/g, ""))) {
+                        fsLibrary.readFile(testExecTemplatePath + fileDriverName, "utf-8", function(err, driverContent) {
+                            if (err) {
+                                throw err;
+                            }
+                            
+                            //modify driver by replacing $TOKEN$ phrases
+                            const mergeFunArg = funName.replace(/\"/g, "") + "(" + input + ");";
+                            const substitute = [ 
+                                /\$TESTID\$/g,
+                                testId,
+                                /\$METHODANDARGUMENT\$/g,
+                                mergeFunArg,
+                                /\$EXPECTED\$/g,
+                                oracle,
+                                /\$METADATA\$/g,
+                                meta,
+                                /\$COMP\$/g,    
+                                comp,
+                                /\$FUNC\$/g,
+                                funName,
+                                /\$INPUT\$/g,
+                                input
+                            ]
+                            for(let i = 0; i < substitute.length; i+=2){
+                                driverContent = driverContent.replace(substitute[i], substitute[i+1]);
+                            }
+                            let modifiedDriver = driverContent;
+                            
+                            //write modified driver
+                            const driverName = 'testDriver' + testId + '.js'
+                            fsLibrary.writeFile(testLocations + driverName , modifiedDriver, (error) => {
+                                if (error) {
+                                    throw error;
+                                }
+                            
+                                
+                            })
+                            
+                        });
+                    } else {
+                    }
+                });
+            });
+
         });
     });
 });
- console.log("processing Test Cases.....")
-
-const waiting = await resolveAfter2Seconds();
-
-console.log('Finished Processing ' + infoForTestRunner.length + " Test Case(s).")
-
-//this will write the proper file information soon
-let {testRun, oracleFileWrite} = testRunnerContent(infoForTestRunner);
-
-const anotherWait = await resolveAfter2Seconds();
-//console.log( "hello" + data)
-//console.log("boodbye" + infoForTestRunner)
-//write the info to testRunner
-
-fsLibrary.writeFile('../oracles/testOracles.json', oracleFileWrite, (error) => {
-    
-    if (error) throw error;
-    
-    }) 
-
-
-
-fsLibrary.writeFile('../project/MarsMapMaker/src/__tests__/testRunner.js', testRun, (error) => {
-    
-    if (error) throw error;
-    
-    }) 
-
 }
 
-// call the function
-asyncReadWrite();
-
+buildTestsAndOracle('../testCases/', '../testCasesExecutables/' ,'../project/MarsMapMaker/src/__tests__/');

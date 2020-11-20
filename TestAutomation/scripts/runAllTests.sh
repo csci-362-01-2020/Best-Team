@@ -11,5 +11,6 @@ sleep 2
 echo "displaying results to HTML, please wait..."
 xdg-open ../reports/finalReport.HTML
 echo "test results desplaying..."
-sleep 10
-rm ../temp/actualResults.json ../oracles/testOracles.json ../project/MarsMapMaker/src/__tests__/testRunner.js
+sleep 15
+cd ../
+rm ./temp/* ./project/MarsMapMaker/src/__tests__/*
