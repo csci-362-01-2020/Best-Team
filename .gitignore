@@ -2,7 +2,7 @@ testOracles.json
 actualResults.json
 finalReport.HTML
 ./TestAutomation/temp/*
-
+node_modules/
 /coverage
 /src/testOutput.json
 /src/__tests__/testRunner.js
