@@ -22,7 +22,7 @@ Add a JSON file to the /testCases/ directory with the following information
 * **If you want to add another component to be tested**
     * In addition to adding a test case JSON file you must also add a new Driver file inside /testCaseExecutables/.
     You must specify which component to import and which default props must be passed to the instance.
-    Cross reference line 4 and 9 of dropdownDriver.js and fieldCardDriver.js to get examples.
+    Cross reference line 4 and 9 of dropDownDriver.js and fieldCardDriver.js to get examples.
 
 ## How it works ##
 
