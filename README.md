@@ -8,16 +8,16 @@ Run tests by with command: bash runAllTests.sh in /TestAutomation/ or /scripts/ 
 ##  How to Add Tests  ##
 * **If a driver exists for your component to be tested**  
     * Add a JSON file to the /testCases/ directory with the following information
-    (Replace # marks and content between # marks, examples can be found inside /testCases/)
-    {
-    "module": "#COMPONENT#",
-    "ID": #TESTCASEID#,
-    "functionName": "#FUNCTIONNAME#",
-    "metaData": "#TESTCASEDESCRIPTION#",
-    "metaDataShort": "#SHORTERTESTCASEDESCRIPTION#",
-    "input": "#INPUTTOFUNCTION#",
-    "expectedOutput": "#ORACLEVALUE#"
-    }
+    (Replace # marks and content between # marks, examples can be found inside /testCases/)  
+    {  
+    "module": "#COMPONENT#",  
+    "ID": #TESTCASEID#,  
+    "functionName": "#FUNCTIONNAME#",  
+    "metaData": "#TESTCASEDESCRIPTION#",  
+    "metaDataShort": "#SHORTERTESTCASEDESCRIPTION#",  
+    "input": "#INPUTTOFUNCTION#",  
+    "expectedOutput": "#ORACLEVALUE#"  
+    }  
 
 * **If you want to add another component to be tested**
     * In addition to adding a test case JSON file you must also add a new Driver file inside /testCaseExecutables/.
