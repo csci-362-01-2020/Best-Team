@@ -2,7 +2,7 @@
 
 ##  Run Tests  ##
 
-**Please run the quickSetUp.sh script before running tests for the first time.**
+**Please run the quickSetUp.sh script before running tests for the first time.**  
 Run tests by with command: bash runAllTests.sh in /TestAutomation/ or /scripts/ directory
 
 ##  How to Add Tests  ##
