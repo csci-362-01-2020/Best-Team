@@ -49,7 +49,9 @@ export class FieldCard extends React.Component {
     let value = fieldVal;
     if (value === "<METADATA_ADD>") {
       value = "";
-    } else if (value.length > 25) {
+    } 
+    //mutation added, originally >
+    else if (value.length < 25) {
       
       value = value.slice(0, 20);
       value = value + "...";
@@ -102,7 +104,8 @@ export class FieldCard extends React.Component {
   //this function is for the check of rendering a missing field card to the UI 
   //change total added cards for changing how many
   isMetaDataAddCard = (cardID) => {
-    let totalAddedCards = 4
+    //mutation added originally = 4
+    let totalAddedCards = 2
     //console.log("Are you true? " + cardID + "  " + (cardID < totalAddedCards))
     return cardID < totalAddedCards;
   }

@@ -45,11 +45,11 @@ export class App extends React.Component {
     let i;
     let j;
     if (Array.isArray(names)) {
-
+      //mutation added second if statement originally was ===
       for (i = 0; i < names.length; i++) {
         for (j = 0; j < names.length; j++) {
           if (i !== j && !arr.includes(names[i])) {
-            if (names[i] === names[j]) {
+            if (names[i] !== names[j]) {
               arr = arr.concat(names[i]);
             }
           }
