@@ -7,7 +7,7 @@ Run tests by with command: bash runAllTests.sh in /TestAutomation/ or /scripts/ 
 
 ##  How to Add Tests  ##
 * **If a driver exists for your component to be tested**  
-    * Add a JSON file to the /testCases/ directory with the following information  
+Add a JSON file to the /testCases/ directory with the following information  
 (Replace # marks and content between # marks, examples can be found inside /testCases/)  
 {  
 "module": "#COMPONENT#",  
