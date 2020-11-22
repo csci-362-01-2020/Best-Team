@@ -1,4 +1,6 @@
 ##  Run Tests  ##
+
+** Please run the quickSetUp script before running tests for the first time. **
 Run tests by with command: bash runAllTests.sh in /TestAutomation/ or /scripts/ directory
 
 ##  How to Add Tests  ##
@@ -22,3 +24,10 @@ Run tests by with command: bash runAllTests.sh in /TestAutomation/ or /scripts/ 
 
 ## How it works ##
 
+runAllTests.sh calls runAllTests.js to reference test cases inside /testCases/ 
+and the drivers inside /testCaseExecutables/ to create the tests. The tests are
+then executed and the results of each test case are stored inside the /temp/
+folder. These are processed sequentially by verifyResults.js and the result
+of each test is appended to the finalReport.HTML file. After all results of
+the test cases are processed and appended to finalReport.HTML, it is opened
+in a browser to display the results of the tests.  

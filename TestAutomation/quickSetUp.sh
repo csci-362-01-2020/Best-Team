@@ -1,3 +1,4 @@
+#script to get dependencies
 echo "initiating start-up"
 cd project/MarsMapMaker/
 echo "grabbing dependencies, please wait..."

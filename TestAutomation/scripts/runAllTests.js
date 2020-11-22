@@ -1,10 +1,5 @@
 const fsLibrary = require('fs');
 
-//function to read through testcases
-//must read testCases build tests and store oracle
-//then verify must read oracle and test results and output to HTML
-
-
 //Reads testcases and builds drivers
 function buildTestsAndOracle(testCasesPath, testExecTemplatePath, testLocations) {
     //read through directory of testCases
@@ -77,8 +72,13 @@ function buildTestsAndOracle(testCasesPath, testExecTemplatePath, testLocations)
                                 
                             })
                             
-                        });
+                        }); 
                     } else {
+                        if(!fileDriverNames.includes(comp.replace(/\"/g, "") + "Driver.js")){
+                            console.log("Error: Driver for " + comp + "does not exist, please create one.");
+                        }
+                        //comp does not match driver name
+                        
                     }
                 });
             });
