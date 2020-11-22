@@ -28,7 +28,7 @@ Add a JSON file to the /testCases/ directory with the following information
 
 runAllTests.sh calls runAllTests.js to reference test cases inside /testCases/ 
 and the drivers inside /testCaseExecutables/ to create the tests. The tests are
-then executed and the results of each test case are stored inside the /temp/
+then executed sequentially and the results of each test case are stored inside the /temp/
 folder. These are processed sequentially by verifyResults.js and the result
 of each test is appended to the finalReport.HTML file. After all results of
 the test cases are processed and appended to finalReport.HTML, it is opened
