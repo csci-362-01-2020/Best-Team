@@ -1,7 +1,7 @@
 #sleeps included for identifing steps of the process
 # temp files are removed if they exist currently
 rm -f ../reports/finalReport.HTML
-rm -f ./temp/* ./project/MarsMapMaker/src/__tests__/*
+rm -f ../temp/* ../project/MarsMapMaker/src/__tests__/*
 echo "building tests..."
 sleep 3
 node runAllTests.js
