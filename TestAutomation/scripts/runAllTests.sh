@@ -15,7 +15,7 @@ node verifyResults.js
 sleep 3
 echo "displaying results to HTML, please wait..."
 xdg-open ../reports/finalReport.HTML
-echo "test results desplaying..."
+echo "test results displaying..."
 sleep 15
 cd ../
 #relevent files to testing process are removed for cleaning before next script call
